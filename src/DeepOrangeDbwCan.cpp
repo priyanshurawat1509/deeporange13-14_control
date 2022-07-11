@@ -47,6 +47,7 @@ namespace deeporange_dbw_ros
                         message->SetFrame(msg);
                         raptorMsg_.header.stamp = msg->header.stamp;
                         raptorMsg_.system_state = message->GetSignal("Sys_State")->GetResult();
+                        pub_raptorState_.publish(raptorMsg_);
                     }
                 }
                 break;
