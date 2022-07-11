@@ -1,4 +1,8 @@
-// A class to manage can msgs (parse and publish to can_tx/rx) using dbc file provided
+/* 
+A class to manage can msgs (parse and publish to can_tx/rx) using dbc file provided
+Relies on DbwSupervisor to figure out what to send to Raptor. Uses "ros_state" topic to get this info
+Receives CAN data from socketcan node and provides info to DbwSupervisor
+*/
 
 #ifndef _DEEPORANGE_DBW_CAN_H_
 #define _DEEPORANGE_DBW_CAN_H_
@@ -14,9 +18,11 @@
 #include <std_msgs/Empty.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
+#include <nav_msgs/Odometry.h>
 #include <deeporange13_msgs/RaptorState.h>
 #include <deeporange13_msgs/RosState.h>
-#include <nav_msgs/Odometry.h>
+#include <deeporange13_msgs/TrackVelocity.h>
+#include <deeporange13_msgs/Vector2.h>
 // Can dbc parser mackage
 #include <can_dbc_parser/DbcMessage.h>
 #include <can_dbc_parser/DbcSignal.h>
@@ -24,7 +30,7 @@
 #include <can_dbc_parser/DbcBuilder.h>
 // enumerations
 #include <deeporange13_control/dispatch_can_msgs.h>
-
+#include <deeporange13_control/state_enums.h>
 
 namespace deeporange_dbw_ros
 
@@ -37,18 +43,20 @@ namespace deeporange_dbw_ros
 
         private:
         void recvCAN(const can_msgs::Frame::ConstPtr& msg);
-        void tester(const std_msgs::String msg);
         void publishCAN(const ros::TimerEvent& event);
-        void publishTrackVeltoCAN(const geometry_msgs::TwistStamped& msg);
+        void publishTrackCommandstoCAN(const deeporange13_msgs::TrackVelocity& msg);
+        void publishRosState(const deeporange13_msgs::RosState& msg);
 
-        ros::Timer timer_;
+        // ros::Timer timer_;
 
         // Publishers
         ros::Publisher pub_can_;
         ros::Publisher pub_estop_;
+        ros::Publisher pub_raptorState_;
         // Subscribers
         ros::Subscriber sub_can_;
         ros::Subscriber sub_trackVel_;
+        ros::Subscriber sub_rosState_;
 
         // Published msgs
         deeporange13_msgs::RaptorState raptorMsg_;
@@ -56,21 +64,19 @@ namespace deeporange_dbw_ros
         // Subscribed msgs
         deeporange13_msgs::RosState rosSupMsg_;
         
-
         // Frame ID
         std::string frameId_;
         can_msgs::Frame frame_;
 
-        // E-stop indicator variables
+        // E-stop indicator variables - unused
         long int estop_;
         std_msgs::Bool estopMsg_;
-
 
         // dbc file variables
         NewEagle::Dbc dbwDbc_;
         std::string dbcFile_;
 
-        // Raptor Comms Variables
+        // Raptor Comms Variables - unused
         int sysState_;
 
     };

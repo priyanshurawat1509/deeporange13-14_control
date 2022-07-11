@@ -7,6 +7,7 @@ Makes use of New Eagle package: can_dbc_parser (https://github.com/NewEagleRapto
 #include <ros/ros.h>
 #include <deeporange13_control/DeepOrangeDbwCan.h>
 #include <deeporange13_control/VehicleModel.h>
+#include <deeporange13_control/DbwSupervisor.h>
 
 int main(int argc, char **argv)
 {
@@ -17,11 +18,11 @@ int main(int argc, char **argv)
   // create CAN dbw object
   deeporange_dbw_ros::DeepOrangeDbwCan n_can(node, priv_nh);
 
-  // create Model object
+  // create vehicle model object
   deeporange_dbw_ros::VehicleModel n_dynamics(node, priv_nh);
 
-  // create the dbwSupervisor Object
-
+  // create the dbwSupervisor object
+  deeporange_dbw_ros::DbwSupervisor n_sup(node, priv_nh);
 
   // handle callbacks until shut down
   ros::spin();

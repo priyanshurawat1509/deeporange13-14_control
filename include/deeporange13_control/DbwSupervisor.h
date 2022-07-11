@@ -1,6 +1,8 @@
 /*
  A class deifinition to allow the supervising of dbw control and communication ...
-between multiple functional objects like VehicleModel and DeepOrangeDbwCan
+between ROS and Raptor
+This takes into account inputs from VehicleModel, dbwCan and rosHealth objects
+to ensure safe and synced communication with Raptor.
 */
 
 
@@ -16,7 +18,7 @@ between multiple functional objects like VehicleModel and DeepOrangeDbwCan
 #include <deeporange13_msgs/RaptorState.h>
 #include <deeporange13_msgs/RosState.h>
 #include <deeporange13_msgs/TrackVelocity.h>
-
+#include <deeporange13_msgs/RosHealth.h>
 #include <deeporange13_control/state_enums.h>
 
 namespace deeporange_dbw_ros
@@ -28,10 +30,12 @@ namespace deeporange_dbw_ros
         ~DbwSupervisor();
 
         private:
-        void getTrackVelocity(const geometry_msgs::TwistStamped::ConstPtr& msg);
+        void getCommandedTwist(const geometry_msgs::TwistStamped::ConstPtr& msg);
         void publishROSState(const ros::TimerEvent& event);
         void getRaptorMsg(const deeporange13_msgs::RaptorState& msg);
         void updateROSStateMsg();
+        void ROSHealthCallback(const deeporange13_msgs::RosHealth& msg);
+
         ros::Timer timer_;
 
         // Publishers
@@ -41,14 +45,20 @@ namespace deeporange_dbw_ros
         // Subscribers
         ros::Subscriber sub_raptor_;
         ros::Subscriber sub_cmdVel_;
+        ros::Subscriber sub_rosHealth_;
 
+
+        // Init the msg variables
         nav_msgs::Odometry odometryMsg_;
         deeporange13_msgs::RaptorState raptorMsg_;
         deeporange13_msgs::RosState rosSupMsg_;
         deeporange13_msgs::TrackVelocity trackVelMsg_;
+        geometry_msgs::TwistStamped commandedTwist_;
 
         // Setting up internal semaphores:
         bool is_raptorMsg_old_;
+        int rosHealth_;
+        bool useROSHealth_;
 
     };
 }

@@ -1,5 +1,7 @@
 /* A class that has definition of the vehicle model (tracked) and 
-functions to split velocity to left and right track velocities
+functions to split velocity to left and right track velocities or torques
+
+Starting with a simple model. Add fidelity later
 */
 
 #ifndef _VEHICLE_MODEL_H_
@@ -10,7 +12,6 @@ functions to split velocity to left and right track velocities
 #include <can_msgs/Frame.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <deeporange13_msgs/TrackVelocity.h>
-
 
 namespace deeporange_dbw_ros
 {
@@ -27,7 +28,7 @@ namespace deeporange_dbw_ros
 
         deeporange13_msgs::TrackVelocity trackVelMsg_;
         float vX_, wZ_;
-        float trackwidth_ = 1.08;
+        float trackWidth_;
 
     };
 }

@@ -29,7 +29,7 @@ private:
   boost::shared_ptr<DeepOrangeDbwCan> node_;
 };
 
-} // do_fortrobotics_can
+} // deeporange_dbw_ros
 
 // Register this plugin with pluginlib.  Names must match nodelets.xml.
 //
