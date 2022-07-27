@@ -9,6 +9,7 @@ Makes use of New Eagle package: can_dbc_parser (https://github.com/NewEagleRapto
 #include <deeporange13_control/VehicleModel.h>
 #include <deeporange13_control/DbwSupervisor.h>
 #include <deeporange13_control/RosHealthMonitor.h>
+#include <deeporange13_control/StackVelPub.h>
 
 
 int main(int argc, char **argv)
@@ -28,6 +29,9 @@ int main(int argc, char **argv)
 
   // create ROS Health object
   deeporange_dbw_ros::RosHealthMonitor n_roshealth(node, priv_nh);
+
+  VehicleMotionPublisher n_velPub(node, priv_nh);
+
   
   // handle callbacks until shut down
   ros::spin();

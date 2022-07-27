@@ -40,6 +40,7 @@ add_library(${PROJECT_NAME}
   src/VehicleModel.cpp
   src/DbwSupervisor.cpp
   src/RosHealthMonitor.cpp
+  src/StackVelPub.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -50,6 +51,7 @@ target_link_libraries(${PROJECT_NAME}
 # target_link_libraries(publisherC ${catkin_LIBRARIES})
 
 add_executable(${PROJECT_NAME}_dbwnode src/node.cpp
+
 )
 # add more executables ^^ ...
 
