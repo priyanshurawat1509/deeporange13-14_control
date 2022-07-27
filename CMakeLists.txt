@@ -39,6 +39,7 @@ add_library(${PROJECT_NAME}
   src/DeepOrangeDbwCan.cpp
   src/VehicleModel.cpp
   src/DbwSupervisor.cpp
+  src/RosHealthMonitor.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}

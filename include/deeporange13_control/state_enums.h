@@ -13,8 +13,11 @@ namespace deeporange_dbw_ros
 
 enum {
   // ROS States
-  AU_NOT_OK                = 0,
-  AU_OK                    = 1,
+  AU0_DEFAULT               = 0,
+  AU1_NOT_OK                = 1,
+  AU2_NAV_ACTIVE            = 2,
+  AU3_NAV_INACTIVE          = 3,
+  AU254_SHUTDOWN            = 254,
 
   // System States
   SS1_DEFAULT               = 1,
@@ -26,10 +29,18 @@ enum {
   SS32_SHUTDOWN             = 32,
 
   // ROS health/fault codes
-  HEALTH_NOT_OK             = 0,
-  HEALTH_OK                 = 1,
+  HEALTH0_DEFAULT              = 0,
+  HEALTH1_FATAL               = 1,
+  HEALTH2_WARN               = 2,
+  HEALTH3_OK                 = 3,
+
   FAULT1_TIMESYNC           = 1,
-  FAULT2_xxx                = 2
+  FAULT2_xxx                = 2,
+
+  HEALTH_ASPECT_FOUND       = 2,
+  HEALTH_ASPECT_NOT_FOUND   = 1,
+  HEALTH_ASPECT_SEARCHING   = 0
+
 
 };
 

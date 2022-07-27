@@ -11,6 +11,7 @@ Starting with a simple model. Add fidelity later
 #include <ros/ros.h>
 #include <can_msgs/Frame.h>
 #include <geometry_msgs/TwistStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <deeporange13_msgs/TrackVelocity.h>
 
 namespace deeporange_dbw_ros
@@ -22,7 +23,7 @@ namespace deeporange_dbw_ros
         ~VehicleModel();
         
         private:
-        void cmdVel2trackVel(const geometry_msgs::TwistStamped::ConstPtr& msg);
+        void cmdVel2trackVel(const geometry_msgs::Twist::ConstPtr& msg);
         ros::Subscriber sub_cmdVel_;
         ros::Publisher pub_trackVel_;
 

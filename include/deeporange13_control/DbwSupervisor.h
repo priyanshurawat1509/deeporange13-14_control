@@ -14,6 +14,7 @@ to ensure safe and synced communication with Raptor.
 #include <std_msgs/Bool.h>
 #include <can_msgs/Frame.h>
 #include <geometry_msgs/TwistStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <deeporange13_msgs/RaptorState.h>
 #include <deeporange13_msgs/RosState.h>
@@ -30,11 +31,12 @@ namespace deeporange_dbw_ros
         ~DbwSupervisor();
 
         private:
-        void getCommandedTwist(const geometry_msgs::TwistStamped::ConstPtr& msg);
+        void getCommandedTwist(const geometry_msgs::Twist::ConstPtr& msg);
         void publishROSState(const ros::TimerEvent& event);
-        void getRaptorMsg(const deeporange13_msgs::RaptorState& msg);
+        void getRaptorMsg(const deeporange13_msgs::RaptorState::ConstPtr& msg);
         void updateROSStateMsg();
-        void ROSHealthCallback(const deeporange13_msgs::RosHealth& msg);
+        void ROSHealthCallback(const deeporange13_msgs::RosHealth::ConstPtr& msg);
+        //void checkRaptorHeartbeart(counter);
 
         ros::Timer timer_;
 
@@ -53,12 +55,12 @@ namespace deeporange_dbw_ros
         deeporange13_msgs::RaptorState raptorMsg_;
         deeporange13_msgs::RosState rosSupMsg_;
         deeporange13_msgs::TrackVelocity trackVelMsg_;
-        geometry_msgs::TwistStamped commandedTwist_;
+        geometry_msgs::Twist commandedTwist_;
 
         // Setting up internal semaphores:
         bool is_raptorMsg_old_;
-        int rosHealth_;
-        bool useROSHealth_;
+        int raptorMsgCounter_;
+        bool is_Phx_NavigationActive_;
 
     };
 }

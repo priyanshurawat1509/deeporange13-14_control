@@ -5,7 +5,7 @@
 - DeepOrangeDbwCan.cpp: Enable passing the ROS topics to the Raptor DBW controller via SocketCAN, which executes the commands for the platform to move.
 - VehicleModel.cpp: Use the vehicle dynamics model to convert vehicle velocity to left and right track velocity/torques.
 - DbwSupervisor.cpp: A ROS state machine in sync with the Raptor controller state machine.
-- TO DO: A node that Monitor health of sensors hardware and ROS connections to the on-board computer, and publishes health info to DbwSupervisor throught `ros_health` topic.
+- TO DO: A node that Monitor health of sensors hardware and ROS connections to the on-board computer, and publishes health info to DbwSupervisor through `ros_health` topic.
 - Implementation - Instantiates the three objects in a single node (as of now).
 
 ### How to Use:
