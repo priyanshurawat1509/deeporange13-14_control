@@ -22,7 +22,7 @@ int main(int argc, char **argv)
   deeporange_dbw_ros::DeepOrangeDbwCan n_can(node, priv_nh);
 
   // create vehicle model object
-  deeporange_dbw_ros::VehicleModel n_dynamics(node, priv_nh);
+  // deeporange_dbw_ros::VehicleModel n_dynamics(node, priv_nh);
 
   // create the dbwSupervisor object
   deeporange_dbw_ros::DbwSupervisor n_sup(node, priv_nh);
@@ -30,7 +30,10 @@ int main(int argc, char **argv)
   // create ROS Health object
   deeporange_dbw_ros::RosHealthMonitor n_roshealth(node, priv_nh);
 
-  VehicleMotionPublisher n_velPub(node, priv_nh);
+  /* only for stackless testing - 
+  This object relies on tos topic /cmd_velocity_choice to decide what cmd_vel to send to CAN.
+  */
+  // VehicleMotionPublisher n_velPub(node, priv_nh);
 
   
   // handle callbacks until shut down

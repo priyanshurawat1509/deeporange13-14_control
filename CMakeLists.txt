@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_generation
   deeporange13_msgs
+  novatel_oem7_msgs
 )
 
 catkin_package(CATKIN_DEPENDS

@@ -28,8 +28,9 @@ enum {
 
   // ROS msgs
   ID_ROS_SUP_MSG                   = 0x386,
-  ID_ROS_CONTROL_VELOCITY_MSG      = 0x387,
+  ID_ROS_CONTROL_MSG               = 0x387,
   ID_ROS_CONTROL_TORQUE_MSG        = 0x388,  
+  ID_ROS_CONTROL_VELOCITY_MSG      = 0x389,
 
   // Motor Encoder msgs
   ID_MOTOR1_POSITION               = 0X69,

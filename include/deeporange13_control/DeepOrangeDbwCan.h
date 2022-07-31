@@ -15,6 +15,7 @@ Receives CAN data from socketcan node and provides info to DbwSupervisor
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/Joy.h>
 #include <geometry_msgs/TwistStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
@@ -45,6 +46,7 @@ namespace deeporange_dbw_ros
         void recvCAN(const can_msgs::Frame::ConstPtr& msg);
         void publishCAN(const ros::TimerEvent& event);
         void publishTrackCommandstoCAN(const deeporange13_msgs::TrackVelocity& msg);
+        void publishCommandstoCAN(const geometry_msgs::Twist::ConstPtr& msg);
         void publishRosState(const deeporange13_msgs::RosState& msg);
 
         // ros::Timer timer_;
@@ -57,6 +59,7 @@ namespace deeporange_dbw_ros
         ros::Subscriber sub_can_;
         ros::Subscriber sub_trackVel_;
         ros::Subscriber sub_rosState_;
+        ros::Subscriber sub_cmdVel_;
 
         // Published msgs
         deeporange13_msgs::RaptorState raptorMsg_;

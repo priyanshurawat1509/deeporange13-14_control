@@ -43,13 +43,17 @@ BO_ 902 ROS_Supervisor_msgs: 8 ROS
  SG_ Au_State : 0|8@1+ (1,0) [0|255] "-" Vector__XXX
  SG_ ROS_Health : 8|1@1+ (1,0) [0|255] "-" Vector__XXX
 
-BO_ 903 ROS_Control_Velocity_msgs: 8 ROS
- SG_ Left_TrackVel_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
- SG_ Right_TrackVel_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
+BO_ 903 ROS_Control_msg: 8 ROS
+ SG_ Linear_X_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
+ SG_ Angular_Z_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "rad/s" Vector__XXX
 
 BO_ 904 ROS_Control_Torque_msgs: 8 ROS
  SG_ Left_TrackTrq_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "N-m" Vector__XXX
  SG_ Right_TrackTrq_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "N-m" Vector__XXX
+
+BO_ 905 ROS_Control_Velocity_msgs: 8 ROS
+ SG_ Left_TrackVel_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
+ SG_ Right_TrackVel_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
 
 BO_ 105 M165_Motor_Position_Info_i1: 8 INV1
  SG_ D4_Delta_Resolver_Filtered : 48|16@1- (0.1,0) [-3276.8|3276.7] "deg" Vector__XXX
@@ -80,9 +84,9 @@ BO_ 405 M165_Motor_Position_Info_i4: 8 INV4
 CM_ BU_ INV1 "The Cascadia Motion inverter";
 CM_ BO_ 901 "State information and semaphores from Raptor's Vehicle State Supervisor";
 CM_ BO_ 902 "State Machine msgs from DBW Supervisor";
-CM_ BO_ 903 "Mobility commands form ROS (Phoenix Stack). Either Torque or Velocity commands to be used. Both of them should never be utilised together. They are choices.";
-CM_ SG_ 903 Left_TrackVel_Demand "The angular velocity required at the left track";
-CM_ SG_ 903 Right_TrackVel_Demand "The angular velocity required at the right track";
+CM_ BO_ 905 "Mobility commands form ROS (Phoenix Stack).  Velocity commands to be used.";
+CM_ SG_ 905 Left_TrackVel_Demand "The angular velocity required at the left track";
+CM_ SG_ 905 Right_TrackVel_Demand "The angular velocity required at the right track";
 CM_ SG_ 904 Left_TrackTrq_Demand "The torque required at the left track";
 CM_ SG_ 904 Right_TrackTrq_Demand "The torque required at the right track";
 CM_ SG_ 105 D4_Delta_Resolver_Filtered "Used in calibration of resolver angle adjustment.";

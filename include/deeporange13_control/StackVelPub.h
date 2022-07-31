@@ -1,7 +1,7 @@
 #include <string.h>
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
-
+#include <std_msgs/Int8.h>
 #include <can_msgs/Frame.h>
 #include <geometry_msgs/TwistStamped.h>
 #include <geometry_msgs/Twist.h>
@@ -20,7 +20,7 @@ class VehicleMotionPublisher
     
     private:
     void publishVel(const ros::TimerEvent& event);
-    void callback(std_msgs::Bool msg);
+    void choiceCallback(std_msgs::Int8 msg);
     ros::Timer timer_;
 
 };

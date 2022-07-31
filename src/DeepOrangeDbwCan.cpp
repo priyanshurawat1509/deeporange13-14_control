@@ -15,13 +15,13 @@ namespace deeporange_dbw_ros
 
         // Instantiate sub/pubs
         sub_can_ = node.subscribe("can_tx", 10, &DeepOrangeDbwCan::recvCAN, this, ros::TransportHints().tcpNoDelay(true));
-        sub_trackVel_ = node.subscribe("/deeporange_dbw_ros/track_commands", 10, &DeepOrangeDbwCan::publishTrackCommandstoCAN, this, ros::TransportHints().tcpNoDelay(true));
+        // sub_trackVel_ = node.subscribe("/deeporange_dbw_ros/track_commands", 10, &DeepOrangeDbwCan::publishTrackCommandstoCAN, this, ros::TransportHints().tcpNoDelay(true));
         sub_rosState_ = node.subscribe("/deeporange_dbw_ros/ros_state", 10, &DeepOrangeDbwCan::publishRosState, this, ros::TransportHints().tcpNoDelay(true));
+        sub_cmdVel_ = node.subscribe("/deeporange1314/cmd_vel", 10, &DeepOrangeDbwCan::publishCommandstoCAN, this, ros::TransportHints().tcpNoDelay(true));
 
         pub_raptorState_ = node.advertise<deeporange13_msgs::RaptorState>("/deeporange_dbw_ros/raptor_state", 10);
         pub_can_ = node.advertise<can_msgs::Frame>("can_rx", 10);
         pub_estop_ = node.advertise<std_msgs::Bool>("fort_estop", 10);
-        // pub_can_.publish(frame_);
 
         // Get params
         priv_nh.getParam("dbw_dbc_file", dbcFile_);
@@ -74,6 +74,7 @@ namespace deeporange_dbw_ros
     }
 
     void DeepOrangeDbwCan::publishTrackCommandstoCAN(const deeporange13_msgs::TrackVelocity& msg)
+    // Get Track commands and publish to CAN
     {
         NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_ROS_CONTROL_VELOCITY_MSG);
         if (rosSupMsg_.ros_state == AU2_NAV_ACTIVE)
@@ -99,6 +100,34 @@ namespace deeporange_dbw_ros
         frame_ = message->GetFrame();
         pub_can_.publish(frame_);
     }
+
+    void DeepOrangeDbwCan::publishCommandstoCAN(const geometry_msgs::Twist::ConstPtr& msg)
+    // get cmd_vel and publish to CAN
+    {
+        NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_ROS_CONTROL_MSG);
+        if (rosSupMsg_.ros_state == AU2_NAV_ACTIVE)
+        /* publish mobility commands to raptor 
+        Does not matter what raptor state is. No need to check it.
+        Raptor Vehicle State Supervisor ensures that ROS messages are 
+        accepted only in the DBW_ROS mode in SS8_NOMINALOP.
+        But if architecture is changed in future, changes must be made here
+        */
+        {
+            message->GetSignal("Linear_X_Demand")->SetResult(msg->linear.x*1000);
+            message->GetSignal("Angular_Z_Demand")->SetResult(msg->angular.z*1000);
+        }
+        else
+        {
+            ROS_WARN("Code should not have reached here. AU or VSS not in acceptable state for ROS track commands to go through.");
+            /* Send zero track commands to CAN to be safe. 
+            Although Raptor will not be in DbwMode_ROS at this point
+            */
+            message->GetSignal("Linear_X_Demand")->SetResult(0);
+            message->GetSignal("Angular_Z_Demand")->SetResult(0);
+        }
+        frame_ = message->GetFrame();
+        pub_can_.publish(frame_);
+    }    
     
     void DeepOrangeDbwCan::publishRosState(const deeporange13_msgs::RosState& msg)
     {
