@@ -105,6 +105,7 @@ namespace deeporange_dbw_ros
     // get cmd_vel and publish to CAN
     {
         NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_ROS_CONTROL_MSG);
+        NewEagle::DbcMessage* message1 = dbwDbc_.GetMessageById(ID_ROS_CONTROL_TEST);
         if (rosSupMsg_.ros_state == AU2_NAV_ACTIVE)
         /* publish mobility commands to raptor 
         Does not matter what raptor state is. No need to check it.
@@ -113,8 +114,10 @@ namespace deeporange_dbw_ros
         But if architecture is changed in future, changes must be made here
         */
         {
-            message->GetSignal("Linear_X_Demand")->SetResult(msg->linear.x*1000);
-            message->GetSignal("Angular_Z_Demand")->SetResult(msg->angular.z*1000);
+            message->GetSignal("Linear_X_Demand")->SetResult(msg->linear.x*(1000));
+            message->GetSignal("Angular_Z_Demand")->SetResult(msg->angular.z*(1000));
+            message1->GetSignal("Linear_X_Demand")->SetResult(msg->linear.x*(1000));
+            message1->GetSignal("Angular_Z_Demand")->SetResult(msg->angular.z*(1000));
         }
         else
         {
@@ -124,9 +127,13 @@ namespace deeporange_dbw_ros
             */
             message->GetSignal("Linear_X_Demand")->SetResult(0);
             message->GetSignal("Angular_Z_Demand")->SetResult(0);
+            //message1->GetSignal("Linear_X_Demand")->SetResult(0);
+            //message1->GetSignal("Angular_Z_Demand")->SetResult(0);
         }
         frame_ = message->GetFrame();
         pub_can_.publish(frame_);
+        //frame_ = message1->GetFrame();
+        //pub_can_.publish(frame_);
     }    
     
     void DeepOrangeDbwCan::publishRosState(const deeporange13_msgs::RosState& msg)
