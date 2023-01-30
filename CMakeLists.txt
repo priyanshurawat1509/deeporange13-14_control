@@ -42,6 +42,7 @@ add_library(${PROJECT_NAME}
   src/DbwSupervisor.cpp
   src/RosHealthMonitor.cpp
   src/StackVelPub.cpp
+  src/DataLogger.cpp
 )
 
 target_link_libraries(${PROJECT_NAME}
@@ -59,7 +60,6 @@ add_executable(${PROJECT_NAME}_dbwnode src/node.cpp
 target_link_libraries(${PROJECT_NAME}_dbwnode ${PROJECT_NAME}
 )
 # add more ^^ ...
-
 
 # roslaunch_add_file_check(launch/control.launch IGNORE_UNSET_ARGS)
 # roslaunch_add_file_check(launch/teleop.launch)

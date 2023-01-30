@@ -10,6 +10,7 @@ Makes use of New Eagle package: can_dbc_parser (https://github.com/NewEagleRapto
 #include <deeporange13_control/DbwSupervisor.h>
 #include <deeporange13_control/RosHealthMonitor.h>
 #include <deeporange13_control/StackVelPub.h>
+#include <deeporange13_control/DataLogger.h>
 
 
 int main(int argc, char **argv)
@@ -29,6 +30,9 @@ int main(int argc, char **argv)
 
   // create ROS Health object
   deeporange_dbw_ros::RosHealthMonitor n_roshealth(node, priv_nh);
+
+  // create Data Logger object
+  deeporange_dbw_ros::DataLogger n_datalogger(node, priv_nh);
 
   /* only for stackless testing - 
   This object relies on tos topic /cmd_velocity_choice to decide what cmd_vel to send to CAN.
