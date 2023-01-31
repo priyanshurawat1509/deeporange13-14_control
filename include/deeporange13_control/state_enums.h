@@ -21,7 +21,7 @@ enum {
 
   // System States
   SS1_DEFAULT               = 1,
-  SS2_WAKE		     = 2,
+  SS2_WAKE                  = 2,
   SS6_READY                 = 6,
   SS8_NOMINALOP             = 8,
   SS99_SAFESTOP             = 99,

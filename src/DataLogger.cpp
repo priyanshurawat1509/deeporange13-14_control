@@ -24,7 +24,7 @@ namespace deeporange_dbw_ros
 
     void DataLogger::recordRosbagAndCANlog(const deeporange13_msgs::RaptorState::ConstPtr& msg)
     {
-        if (!isRecording && (msg->system_state >= SS2_WAKE && msg->system_state <= SS8_NOMINALOP))
+        if (!isRecording && (msg->system_state == SS8_NOMINALOP))
         {
             // Obtaining timestamp (EST) to name ROS bag and CAN dump
             boost::posix_time::ptime my_posix_time = ros::Time::now().toBoost();
@@ -52,7 +52,7 @@ namespace deeporange_dbw_ros
             ROS_INFO("Started data recording");
             ROS_INFO("Current System State = %d", msg->system_state);
         }
-        else if (isRecording && (msg->system_state == SS31_SHUTDOWN_REQUESTED || msg->system_state >= 200))
+        else if (isRecording && (msg->system_state == SS6_READY || msg->system_state == SS31_SHUTDOWN_REQUESTED || msg->system_state >= 200))
         {
             // Wait for 10 seconds before killing data logging to capture crucial data in case of system error
             ros::Duration(10).sleep();
