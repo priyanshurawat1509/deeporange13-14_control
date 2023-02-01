@@ -24,6 +24,7 @@ Receives CAN data from socketcan node and provides info to DbwSupervisor
 #include <deeporange13_msgs/RosState.h>
 #include <deeporange13_msgs/TrackVelocity.h>
 #include <deeporange13_msgs/Vector2.h>
+#include <deeporange13_msgs/TorqueValues.h>
 // Can dbc parser mackage
 #include <can_dbc_parser/DbcMessage.h>
 #include <can_dbc_parser/DbcSignal.h>
@@ -46,8 +47,9 @@ namespace deeporange_dbw_ros
         void recvCAN(const can_msgs::Frame::ConstPtr& msg);
         void publishCAN(const ros::TimerEvent& event);
         void publishTrackCommandstoCAN(const deeporange13_msgs::TrackVelocity& msg);
-        void publishCommandstoCAN(const geometry_msgs::Twist::ConstPtr& msg);
+        void publishVelocitytoCAN(const geometry_msgs::Twist::ConstPtr& msg);
         void publishRosState(const deeporange13_msgs::RosState& msg);
+        void publishTorquetoCAN(const deeporange13_msgs::TorqueValues& msg);
 
         // ros::Timer timer_;
 
@@ -60,6 +62,7 @@ namespace deeporange_dbw_ros
         ros::Subscriber sub_trackVel_;
         ros::Subscriber sub_rosState_;
         ros::Subscriber sub_cmdVel_;
+        ros::Subscriber sub_cmdTq;
 
         // Published msgs
         deeporange13_msgs::RaptorState raptorMsg_;
