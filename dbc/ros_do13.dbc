@@ -38,6 +38,7 @@ BU_: ROS RAPTOR INV1 INV2 INV3 INV4 INV5 INV6
 
 BO_ 901 VehicleState_Supervisor_msg: 8 RAPTOR
  SG_ Sys_State : 0|8@1+ (1,0) [0|255] "-" Vector__XXX
+ SG_ Dbw_Mode : 8|4@1+ (1,0) [0|15] "-" Vector__XX
 
 BO_ 902 ROS_Supervisor_msgs: 8 ROS
  SG_ Au_State : 0|8@1+ (1,0) [0|255] "-" Vector__XXX
@@ -83,8 +84,6 @@ BO_ 405 M165_Motor_Position_Info_i4: 8 INV4
  SG_ D2_Motor_Speed : 16|16@1- (1,0) [-32768|32767] "rpm" Vector__XXX
  SG_ D1_Motor_Angle_Electrical : 0|16@1+ (0.1,0) [0|6553.5] "deg" Vector__XXX
 
-
-
 CM_ BU_ INV1 "The Cascadia Motion inverter";
 CM_ BO_ 901 "State information and semaphores from Raptor's Vehicle State Supervisor";
 CM_ BO_ 902 "State Machine msgs from DBW Supervisor";
@@ -97,5 +96,3 @@ CM_ SG_ 105 D4_Delta_Resolver_Filtered "Used in calibration of resolver angle ad
 CM_ SG_ 105 D3_Electrical_Output_Frequency "The actual electrical frequency of the inverter";
 CM_ SG_ 105 D2_Motor_Speed "The measured speed of the motor";
 CM_ SG_ 105 D1_Motor_Angle_Electrical "The Electrical Angle of the motor as read by the encoder or resolver";
-
-

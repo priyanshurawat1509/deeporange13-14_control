@@ -29,7 +29,7 @@ namespace deeporange_dbw_ros
         // Instantiate the dbc class
         dbwDbc_ = NewEagle::DbcBuilder().NewDbc(dbcFile_);
     }
-
+    
     DeepOrangeDbwCan::~DeepOrangeDbwCan(){} 
 
     void DeepOrangeDbwCan::recvCAN(const can_msgs::Frame::ConstPtr& msg)
@@ -38,8 +38,8 @@ namespace deeporange_dbw_ros
         {
             switch (msg->id)
             {
-                case ID_VSS_MSG:
-                 // getting raptor state and publishing to ROS
+                case ID_VSS_MSG: 
+                 // getting raptor state, dbw mode and publishing to ROS
                 {
                     NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_VSS_MSG);
                     if (msg->dlc >= message->GetDlc())
@@ -47,10 +47,24 @@ namespace deeporange_dbw_ros
                         message->SetFrame(msg);
                         raptorMsg_.header.stamp = msg->header.stamp;
                         raptorMsg_.system_state = message->GetSignal("Sys_State")->GetResult();
+                        raptorMsg_.dbw_mode = message->GetSignal("Dbw_Mode")->GetResult();
                         pub_raptorState_.publish(raptorMsg_);
                     }
                 }
                 break;
+
+                // case ID_DBW_MSG:
+                // {
+                //     NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_DBW_MSG);
+                //     if (msg->dlc >= message->GetDlc())
+                //     {
+                //         message->SetFrame(msg);
+                //         dbwMsg_.header.stamp = msg->header.stamp;
+                //         dbwMsg_.dbw_mode = message->GetSignal("dbw_mode")->GetResult();
+                //         pub_dbwMode_.publish(dbwMsg_);
+                //     }
+                // }
+                // break;
 
                 case ID_MOTOR1_POSITION:
                 {
@@ -65,7 +79,6 @@ namespace deeporange_dbw_ros
                     }
                 }
                 break;
-
                 // case :
                 // for others - none currently
 
