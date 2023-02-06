@@ -38,7 +38,7 @@ BU_: ROS RAPTOR INV1 INV2 INV3 INV4 INV5 INV6
 
 BO_ 901 VehicleState_Supervisor_msg: 8 RAPTOR
  SG_ Sys_State : 0|8@1+ (1,0) [0|255] "-" Vector__XXX
- SG_ Dbw_Mode : 8|4@1+ (1,0) [0|15] "-" Vector__XX
+ SG_ DBW_Mode : 8|4@1+ (1,0) [0|15] "-" Vector__XX
 
 BO_ 902 ROS_Supervisor_msgs: 8 ROS
  SG_ Au_State : 0|8@1+ (1,0) [0|255] "-" Vector__XXX
