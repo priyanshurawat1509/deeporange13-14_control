@@ -81,13 +81,15 @@ namespace deeporange_dbw_ros
         nav_msgs::Odometry odometryMsg_;
         sensor_msgs::Imu gpsImuMsg_;
 
-        // Vector datatype for Wz
+        // Datatype for Wz
         std::vector<float> vectorWz_;
         float averageWz_ = 0;
+        float imutime_ = 0;
 
-        // Vector datatype for Vx
+        // Datatype for Vx
         std::vector<float> vectorVx_;
         float averageVx_ = 0;
+        float odomtime_ = 0;
         
         // Frame ID
         std::string frameId_;

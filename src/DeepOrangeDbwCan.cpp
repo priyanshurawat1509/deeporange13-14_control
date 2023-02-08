@@ -207,14 +207,16 @@ namespace deeporange_dbw_ros
             }
             averageWz_ = averageWz_/4;
 
-            // Storing average of 4 values in the measuredWz field
-            measuredVelocity_.header = msg.header;
+            // Publishing the average of 4 imu values
             measuredVelocity_.measuredWz = averageWz_;
-            printf("GPS IMU topic time is %d \n",msg.header.stamp.nsec);
 
-            vectorWz_.clear();
+            imutime_ = msg.header.stamp.sec + msg.header.stamp.nsec;
+            
+            printf("GPS IMU topic time is %d \n",msg.header.stamp.nsec);
+            vectorWz_.clear();   
         }
         averageWz_ = 0;
+        imutime_ = 0;
     }
 
     void DeepOrangeDbwCan::getMeasuredVx(const nav_msgs::Odometry& msg)
@@ -226,15 +228,23 @@ namespace deeporange_dbw_ros
             }
             averageVx_ = averageVx_/2;
 
-            // Storing average of 2 values in the measuredVx field
+            // Publishing the average of 2 odom values and time difference 
+            measuredVelocity_.header = msg.header;
             measuredVelocity_.measuredVx = averageVx_;
-            printf("Odom topic time is %d \n",msg.header.stamp.nsec);
 
-            vectorVx_.clear();
+            odomtime_ = msg.header.stamp.sec + msg.header.stamp.nsec;
+            measuredVelocity_.timediff = imutime_- odomtime_;
             pub_measuredVel_.publish(measuredVelocity_);
+            
+            printf("Odom topic time is %d \n",msg.header.stamp.nsec);
+            vectorVx_.clear();
         }
         averageVx_ = 0;
+        odomtime_ = 0;
     }
+
+
+
 
 
 } // end namespace deeporange_dbw_ros
