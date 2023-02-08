@@ -19,6 +19,12 @@ namespace deeporange_dbw_ros
         sub_rosState_ = node.subscribe("/deeporange_dbw_ros/ros_state", 10, &DeepOrangeDbwCan::publishRosState, this, ros::TransportHints().tcpNoDelay(true));
         sub_cmdVel_ = node.subscribe("/deeporange1314/cmd_vel", 10, &DeepOrangeDbwCan::publishVelocitytoCAN, this, ros::TransportHints().tcpNoDelay(true));
         sub_cmdTq = node.subscribe("/deeporange1314/cmd_tq", 10, &DeepOrangeDbwCan::publishTorquetoCAN, this, ros::TransportHints().tcpNoDelay(true));
+
+        // Novatel subscribers & publisher for measured velocities
+        sub_odom_ = node.subscribe("/novatel/oem7/odom", 10, &DeepOrangeDbwCan::getMeasuredVx, this, ros::TransportHints().tcpNoDelay(true));
+        sub_corrImu_ = node.subscribe("/novatel/oem7/corrimu", 10, &DeepOrangeDbwCan::getMeasuredWz, this, ros::TransportHints().tcpNoDelay(true));
+        pub_measuredVel_ = node.advertise<deeporange13_msgs::MeasuredVelocity>("measured_velocities", 10);
+
         pub_raptorState_ = node.advertise<deeporange13_msgs::RaptorState>("/deeporange_dbw_ros/raptor_state", 10);
         pub_can_ = node.advertise<can_msgs::Frame>("can_rx", 10);
         pub_estop_ = node.advertise<std_msgs::Bool>("fort_estop", 10);
@@ -189,6 +195,45 @@ namespace deeporange_dbw_ros
         message->GetSignal("ROS_Health")->SetResult(rosSupMsg_.ros_health); // update if needed to be sent to raptor. otherwise remove.
         frame_ = message->GetFrame();
         pub_can_.publish(frame_);
+    }
+
+ 
+    void DeepOrangeDbwCan::getMeasuredWz(const novatel_oem7_msgs::CORRIMU& msg)
+    {
+        vectorWz_.push_back(msg.yaw_rate*msg.imu_data_count);
+        if(vectorWz_.size()==4){
+            for(int i=0; i<4; i++){
+                averageWz_ = averageWz_ + vectorWz_[i];
+            }
+            averageWz_ = averageWz_/4;
+
+            // Storing average of 4 values in the measuredWz field
+            measuredVelocity_.header = msg.header;
+            measuredVelocity_.measuredWz = averageWz_;
+            printf("Corrimu topic time is %lf \n",msg.header);
+
+            vectorWz_.clear();
+        }
+        averageWz_ = 0;
+    }
+
+    void DeepOrangeDbwCan::getMeasuredVx(const nav_msgs::Odometry& msg)
+    {
+        vectorVx_.push_back(msg.twist.twist.linear.x);
+        if(vectorVx_.size()==2){
+            for(int i=0; i<2; i++){
+                averageVx_ = averageVx_ + vectorVx_[i];
+            }
+            averageVx_ = averageVx_/2;
+
+            // Storing average of 2 values in the measuredVx field
+            measuredVelocity_.measuredVx = averageVx_;
+            printf("Odom topic time is %lf \n",msg.header);
+
+            vectorVx_.clear();
+            pub_measuredVel_.publish(measuredVelocity_);
+        }
+        averageVx_ = 0;
     }
 
 
