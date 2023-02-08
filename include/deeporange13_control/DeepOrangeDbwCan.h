@@ -52,6 +52,7 @@ namespace deeporange_dbw_ros
         void publishVelocitytoCAN(const geometry_msgs::Twist::ConstPtr& msg);
         void publishRosState(const deeporange13_msgs::RosState& msg);
         void publishTorquetoCAN(const deeporange13_msgs::TorqueValues& msg);
+        void publishMeasuredVeltoCAN(const deeporange13_msgs::MeasuredVelocity& msg);
         void getMeasuredVx(const nav_msgs::Odometry& msg);
         void getMeasuredWz(const sensor_msgs::Imu& msg);
 

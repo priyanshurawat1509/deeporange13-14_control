@@ -243,8 +243,13 @@ namespace deeporange_dbw_ros
         odomtime_ = 0;
     }
 
-
-
-
-
+    // Publisher to publish measured velocities to CAN
+    void DeepOrangeDbwCan::publishMeasuredVeltoCAN(const deeporange13_msgs::MeasuredVelocity& msg)
+    {   
+        NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_MEASURED_VEL);
+        message->GetSignal("Linear_Velocity")->SetResult(msg.measuredVx);
+        message->GetSignal("Angular_Velocity")->SetResult(msg.measuredWz); 
+        frame_ = message->GetFrame();
+        pub_can_.publish(frame_);
+    }
 } // end namespace deeporange_dbw_ros
