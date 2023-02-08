@@ -5,11 +5,12 @@
   <arg name="use_kvaser" default="false" />
   <arg name="socketcan_device" default="can0" />  <!-- vehicle's CAN1-->
 
-  <node pkg="socketcan_bridge" type="socketcan_bridge_node" name="socketcan_bridge" if="$(arg use_socketcan)">
+ <node pkg="socketcan_bridge" type="socketcan_bridge_node" name="socketcan_bridge" if="$(arg use_socketcan)">
     <param name="can_device" value="$(arg socketcan_device)" />
     <remap from="received_messages" to="can_tx"/>
     <remap from="sent_messages" to="can_rx"/>
   </node>
+
 
   <node pkg="deeporange13_control" type="deeporange13_control_dbwnode" name="deeporange_dbw" output="screen">
     <param name="dbw_dbc_file" textfile="$(find deeporange13_control)/dbc/ros_do13.dbc" />

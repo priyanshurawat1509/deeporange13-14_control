@@ -60,6 +60,10 @@ BO_ 905 ROS_Control_Velocity_msgs: 8 ROS
  SG_ Left_TrackVel_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
  SG_ Right_TrackVel_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
 
+BO_ 906 ROS_Measured_Velocity_msg: 2 ROS
+ SG_ Linear_Velocity : 0|8@1+ (1,0) [0|255] "m/s" Vector__XXX
+ SG_ Angular_Velocity : 8|8@1+ (1,0) [0|255] "rad/s" Vector__XX
+
 BO_ 105 M165_Motor_Position_Info_i1: 8 INV1
  SG_ D4_Delta_Resolver_Filtered : 48|16@1- (0.1,0) [-3276.8|3276.7] "deg" Vector__XXX
  SG_ D3_Electrical_Output_Frequency : 32|16@1- (0.1,0) [-3276.8|3276.7] "hz" Vector__XXX

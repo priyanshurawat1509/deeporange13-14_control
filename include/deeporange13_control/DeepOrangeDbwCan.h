@@ -20,7 +20,7 @@ Receives CAN data from socketcan node and provides info to DbwSupervisor
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
 #include <nav_msgs/Odometry.h>
-#include <novatel_oem7_msgs/CORRIMU.h>
+#include <sensor_msgs/Imu.h>
 #include <deeporange13_msgs/RaptorState.h>
 #include <deeporange13_msgs/RosState.h>
 #include <deeporange13_msgs/TrackVelocity.h>
@@ -53,7 +53,7 @@ namespace deeporange_dbw_ros
         void publishRosState(const deeporange13_msgs::RosState& msg);
         void publishTorquetoCAN(const deeporange13_msgs::TorqueValues& msg);
         void getMeasuredVx(const nav_msgs::Odometry& msg);
-        void getMeasuredWz(const novatel_oem7_msgs::CORRIMU& msg);
+        void getMeasuredWz(const sensor_msgs::Imu& msg);
 
         // ros::Timer timer_;
 
@@ -69,7 +69,7 @@ namespace deeporange_dbw_ros
         ros::Subscriber sub_rosState_;
         ros::Subscriber sub_cmdVel_;
         ros::Subscriber sub_cmdTq;
-        ros::Subscriber sub_corrImu_;
+        ros::Subscriber sub_gpsImu_;
         ros::Subscriber sub_odom_;
 
         // Published msgs
@@ -79,7 +79,7 @@ namespace deeporange_dbw_ros
         // Subscribed msgs
         deeporange13_msgs::RosState rosSupMsg_;
         nav_msgs::Odometry odometryMsg_;
-        novatel_oem7_msgs::CORRIMU corrimuMsg_;
+        sensor_msgs::Imu gpsImuMsg_;
 
         // Vector datatype for Wz
         std::vector<float> vectorWz_;

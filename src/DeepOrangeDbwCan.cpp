@@ -22,7 +22,7 @@ namespace deeporange_dbw_ros
 
         // Novatel subscribers & publisher for measured velocities
         sub_odom_ = node.subscribe("/novatel/oem7/odom", 10, &DeepOrangeDbwCan::getMeasuredVx, this, ros::TransportHints().tcpNoDelay(true));
-        sub_corrImu_ = node.subscribe("/novatel/oem7/corrimu", 10, &DeepOrangeDbwCan::getMeasuredWz, this, ros::TransportHints().tcpNoDelay(true));
+        sub_gpsImu_ = node.subscribe("/gps/imu", 10, &DeepOrangeDbwCan::getMeasuredWz, this, ros::TransportHints().tcpNoDelay(true));
         pub_measuredVel_ = node.advertise<deeporange13_msgs::MeasuredVelocity>("measured_velocities", 10);
 
         pub_raptorState_ = node.advertise<deeporange13_msgs::RaptorState>("/deeporange_dbw_ros/raptor_state", 10);
@@ -198,9 +198,9 @@ namespace deeporange_dbw_ros
     }
 
  
-    void DeepOrangeDbwCan::getMeasuredWz(const novatel_oem7_msgs::CORRIMU& msg)
+    void DeepOrangeDbwCan::getMeasuredWz(const sensor_msgs::Imu& msg)
     {
-        vectorWz_.push_back(msg.yaw_rate*msg.imu_data_count);
+        vectorWz_.push_back(msg.angular_velocity.z);
         if(vectorWz_.size()==4){
             for(int i=0; i<4; i++){
                 averageWz_ = averageWz_ + vectorWz_[i];
@@ -210,7 +210,7 @@ namespace deeporange_dbw_ros
             // Storing average of 4 values in the measuredWz field
             measuredVelocity_.header = msg.header;
             measuredVelocity_.measuredWz = averageWz_;
-            printf("Corrimu topic time is %lf \n",msg.header);
+            printf("GPS IMU topic time is %d \n",msg.header.stamp.nsec);
 
             vectorWz_.clear();
         }
@@ -228,7 +228,7 @@ namespace deeporange_dbw_ros
 
             // Storing average of 2 values in the measuredVx field
             measuredVelocity_.measuredVx = averageVx_;
-            printf("Odom topic time is %lf \n",msg.header);
+            printf("Odom topic time is %d \n",msg.header.stamp.nsec);
 
             vectorVx_.clear();
             pub_measuredVel_.publish(measuredVelocity_);
@@ -237,4 +237,4 @@ namespace deeporange_dbw_ros
     }
 
 
-} // end namespace deeporange_dbw_ros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
+} // end namespace deeporange_dbw_ros
