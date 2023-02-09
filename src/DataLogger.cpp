@@ -45,8 +45,9 @@ namespace deeporange_dbw_ros
             // Record CAN log for all CAN buses combined
             system(("candump any -ta >" + can_log_name + " &").c_str());
             // Record ROS bags for relevant topics only
-            system(("rosbag record -e '(.*)gps(.*)' -e '(.*)pose(.*)' -e '(.*)cmd_vel(.*)' -e '(.*)/novatel/oem7(.*)' -e '(.*)local_planner_and_controller(.*)' -e '(.*)tf(.*)' -x '(.*)approach_object(.*)' -x '(.*)approach_object_behavior(.*)' -x '(.*)global_costmap(.*)' -e '(.*)global_planner(.*)' -x '(.*)goto_object_behavior(.*)' -x '(.*)local_costmap(.*)' -x '(.*)omnigraph(.*)' -x '(.*)point_cloud_pipeline(.*)' -x '(.*)point_cloud_cache(.*)' -e '(.*)local_planner(.*)' -e '(.*)odom(.*)' -e '(.*)navigation_manager(.*)' -O " + ros_bag_name + " __name:=rosbag_recording &").c_str());
-            
+            //system(("rosbag record -e '(.*)gps(.*)' -e '(.*)pose(.*)' -e '(.*)cmd_vel(.*)' -e '(.*)/novatel/oem7(.*)' -e '(.*)local_planner_and_controller(.*)' -e '(.*)tf(.*)' -x '(.*)approach_object(.*)' -x '(.*)approach_object_behavior(.*)' -x '(.*)global_costmap(.*)' -e '(.*)global_planner(.*)' -x '(.*)goto_object_behavior(.*)' -x '(.*)local_costmap(.*)' -x '(.*)omnigraph(.*)' -x '(.*)point_cloud_pipeline(.*)' -x '(.*)point_cloud_cache(.*)' -e '(.*)local_planner(.*)' -e '(.*)odom(.*)' -e '(.*)navigation_manager(.*)' -O " + ros_bag_name + " __name:=rosbag_recording &").c_str());
+            system(("rosbag record -a -O " + ros_bag_name + " __name:=rosbag_recording &").c_str());
+
             // Update recording state
             isRecording = true;
             ROS_INFO("Started data recording");
