@@ -52,7 +52,7 @@ BO_ 25 ROS_Control_test: 8 ROS
  SG_ Linear_X_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
  SG_ Angular_Z_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "rad/s" Vector__XXX
 
-BO_ 904 ROS_Control_Torque_msgs: 8 sharROS
+BO_ 904 ROS_Control_Torque_msgs: 8 ROS
  SG_ Left_TrackTrq_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "N-m" Vector__XXX
  SG_ Right_TrackTrq_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "N-m" Vector__XXX
 
