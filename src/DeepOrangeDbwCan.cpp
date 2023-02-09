@@ -24,6 +24,7 @@ namespace deeporange_dbw_ros
         sub_odom_ = node.subscribe("/novatel/oem7/odom", 10, &DeepOrangeDbwCan::getMeasuredVx, this, ros::TransportHints().tcpNoDelay(true));
         sub_gpsImu_ = node.subscribe("/gps/imu", 10, &DeepOrangeDbwCan::getMeasuredWz, this, ros::TransportHints().tcpNoDelay(true));
         pub_measuredVel_ = node.advertise<deeporange13_msgs::MeasuredVelocity>("measured_velocities", 10);
+        sub_measuredVel_ = node.subscribe("measured_velocities", 10, &DeepOrangeDbwCan::publishMeasuredVeltoCAN, this, ros::TransportHints().tcpNoDelay(true));
 
         pub_raptorState_ = node.advertise<deeporange13_msgs::RaptorState>("/deeporange_dbw_ros/raptor_state", 10);
         pub_can_ = node.advertise<can_msgs::Frame>("can_rx", 10);

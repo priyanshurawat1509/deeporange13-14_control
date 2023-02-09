@@ -72,6 +72,7 @@ namespace deeporange_dbw_ros
         ros::Subscriber sub_cmdTq;
         ros::Subscriber sub_gpsImu_;
         ros::Subscriber sub_odom_;
+        ros::Subscriber sub_measuredVel_;
 
         // Published msgs
         deeporange13_msgs::RaptorState raptorMsg_;
