@@ -19,6 +19,12 @@ namespace deeporange_dbw_ros
         sub_rosState_ = node.subscribe("/deeporange_dbw_ros/ros_state", 10, &DeepOrangeDbwCan::publishRosState, this, ros::TransportHints().tcpNoDelay(true));
         sub_cmdVel_ = node.subscribe("/deeporange1314/cmd_vel", 10, &DeepOrangeDbwCan::publishVelocitytoCAN, this, ros::TransportHints().tcpNoDelay(true));
         sub_cmdTq = node.subscribe("/deeporange1314/cmd_tq", 10, &DeepOrangeDbwCan::publishTorquetoCAN, this, ros::TransportHints().tcpNoDelay(true));
+
+        // Novatel subscribers & publisher for measured velocities
+        sub_odom_ = node.subscribe("/novatel/oem7/odom", 10, &DeepOrangeDbwCan::getMeasuredVx, this, ros::TransportHints().tcpNoDelay(true));
+        sub_gpsImu_ = node.subscribe("/gps/imu", 10, &DeepOrangeDbwCan::getMeasuredWz, this, ros::TransportHints().tcpNoDelay(true));
+        pub_measuredVel_ = node.advertise<deeporange13_msgs::MeasuredVelocity>("measured_velocities", 10);
+
         pub_raptorState_ = node.advertise<deeporange13_msgs::RaptorState>("/deeporange_dbw_ros/raptor_state", 10);
         pub_can_ = node.advertise<can_msgs::Frame>("can_rx", 10);
         pub_estop_ = node.advertise<std_msgs::Bool>("fort_estop", 10);
@@ -191,5 +197,63 @@ namespace deeporange_dbw_ros
         pub_can_.publish(frame_);
     }
 
+ 
+    void DeepOrangeDbwCan::getMeasuredWz(const sensor_msgs::Imu& msg)
+    {
+        vectorWz_.push_back(msg.angular_velocity.z);
+        if(vectorWz_.size()==4){
+            for(int i=0; i<4; i++){
+                averageWz_ = averageWz_ + vectorWz_[i];
+            }
+            averageWz_ = averageWz_/4;
 
-} // end namespace deeporange_dbw_ros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
+            // imutime_ = msg.header.stamp.sec + msg.header.stamp.nsec*1e-9;
+            // printf("GPS IMU topic time is %d \n",msg.header.stamp.nsec);
+
+            // Publishing the average of 4 imu values
+            measuredVelocity_.measuredWz = averageWz_;
+            measuredVelocity_.timesecWz = msg.header.stamp.sec + msg.header.stamp.nsec*1e-9;
+
+            vectorWz_.clear();   
+        }
+        averageWz_ = 0;
+        
+    }
+
+    void DeepOrangeDbwCan::getMeasuredVx(const nav_msgs::Odometry& msg)
+    {
+        vectorVx_.push_back(msg.twist.twist.linear.x);
+        if(vectorVx_.size()==2){
+            for(int i=0; i<2; i++){
+                averageVx_ = averageVx_ + vectorVx_[i];
+            }
+            averageVx_ = averageVx_/2;
+            
+            // To calculate time difference between odom and imu messages
+            // odomtime_ = msg.header.stamp.sec + msg.header.stamp.nsec*1e-9;
+            // measuredVelocity_.timediff = imutime_- odomtime_;
+            // odomtime_ = 0;
+            // imutime_ = 0;
+            // printf("Odom topic time is %d \n",msg.header.stamp.nsec);
+            
+            // Publishing the average of 2 odom values and time difference 
+            measuredVelocity_.header = msg.header;
+            measuredVelocity_.measuredVx = averageVx_;
+            measuredVelocity_.timesecVx = msg.header.stamp.sec + msg.header.stamp.nsec*1e-9;
+            pub_measuredVel_.publish(measuredVelocity_);
+            
+            vectorVx_.clear();
+        }
+        averageVx_ = 0;
+    }
+
+    // Publisher to publish measured velocities to CAN
+    void DeepOrangeDbwCan::publishMeasuredVeltoCAN(const deeporange13_msgs::MeasuredVelocity& msg)
+    {   
+        NewEagle::DbcMessage* message = dbwDbc_.GetMessageById(ID_MEASURED_VEL);
+        message->GetSignal("Linear_Velocity")->SetResult(msg.measuredVx);
+        message->GetSignal("Angular_Velocity")->SetResult(msg.measuredWz); 
+        frame_ = message->GetFrame();
+        pub_can_.publish(frame_);
+    }
+} // end namespace deeporange_dbw_ros

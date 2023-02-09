@@ -20,11 +20,13 @@ Receives CAN data from socketcan node and provides info to DbwSupervisor
 #include <std_msgs/Bool.h>
 #include <std_msgs/String.h>
 #include <nav_msgs/Odometry.h>
+#include <sensor_msgs/Imu.h>
 #include <deeporange13_msgs/RaptorState.h>
 #include <deeporange13_msgs/RosState.h>
 #include <deeporange13_msgs/TrackVelocity.h>
 #include <deeporange13_msgs/Vector2.h>
 #include <deeporange13_msgs/TorqueValues.h>
+#include <deeporange13_msgs/MeasuredVelocity.h>
 // Can dbc parser mackage
 #include <can_dbc_parser/DbcMessage.h>
 #include <can_dbc_parser/DbcSignal.h>
@@ -50,6 +52,9 @@ namespace deeporange_dbw_ros
         void publishVelocitytoCAN(const geometry_msgs::Twist::ConstPtr& msg);
         void publishRosState(const deeporange13_msgs::RosState& msg);
         void publishTorquetoCAN(const deeporange13_msgs::TorqueValues& msg);
+        void publishMeasuredVeltoCAN(const deeporange13_msgs::MeasuredVelocity& msg);
+        void getMeasuredVx(const nav_msgs::Odometry& msg);
+        void getMeasuredWz(const sensor_msgs::Imu& msg);
 
         // ros::Timer timer_;
 
@@ -57,18 +62,35 @@ namespace deeporange_dbw_ros
         ros::Publisher pub_can_;
         ros::Publisher pub_estop_;
         ros::Publisher pub_raptorState_;
+        ros::Publisher pub_measuredVel_;
+
         // Subscribers
         ros::Subscriber sub_can_;
         ros::Subscriber sub_trackVel_;
         ros::Subscriber sub_rosState_;
         ros::Subscriber sub_cmdVel_;
         ros::Subscriber sub_cmdTq;
+        ros::Subscriber sub_gpsImu_;
+        ros::Subscriber sub_odom_;
 
         // Published msgs
         deeporange13_msgs::RaptorState raptorMsg_;
-        nav_msgs::Odometry odometryMsg_;
+        deeporange13_msgs::MeasuredVelocity measuredVelocity_;
+        
         // Subscribed msgs
         deeporange13_msgs::RosState rosSupMsg_;
+        nav_msgs::Odometry odometryMsg_;
+        sensor_msgs::Imu gpsImuMsg_;
+
+        // Datatype for Wz
+        std::vector<float> vectorWz_;
+        float averageWz_ = 0;
+        // float imutime_ = 0;
+
+        // Datatype for Vx
+        std::vector<float> vectorVx_;
+        float averageVx_ = 0;
+        // float odomtime_ = 0;
         
         // Frame ID
         std::string frameId_;

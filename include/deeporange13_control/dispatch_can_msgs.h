@@ -39,6 +39,9 @@ enum {
   ID_MOTOR3_POSITION               = 0X131,
   ID_MOTOR4_POSITION               = 0X195,
 
+  // Novatel Measured velocities
+  ID_MEASURED_VEL                  = 0x38A,
+
 };
 
 } //deeporange_dbw_ros

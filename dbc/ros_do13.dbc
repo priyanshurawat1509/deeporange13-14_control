@@ -52,13 +52,17 @@ BO_ 25 ROS_Control_test: 8 ROS
  SG_ Linear_X_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
  SG_ Angular_Z_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "rad/s" Vector__XXX
 
-BO_ 904 ROS_Control_Torque_msgs: 8 ROS
+BO_ 904 ROS_Control_Torque_msgs: 8 sharROS
  SG_ Left_TrackTrq_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "N-m" Vector__XXX
  SG_ Right_TrackTrq_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "N-m" Vector__XXX
 
 BO_ 905 ROS_Control_Velocity_msgs: 8 ROS
  SG_ Left_TrackVel_Demand : 0|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
  SG_ Right_TrackVel_Demand : 32|32@1- (1,0) [-3.4E+038|3.4E+038] "m/s" Vector__XXX
+
+BO_ 906 ROS_Measured_Velocity_msg: 4 ROS
+ SG_ Linear_Velocity : 0|16@1- (0.001,0) [-32.768|+32.767] "m/s" Vector__XXX
+ SG_ Angular_Velocity : 16|16@1- (0.0001,0) [-3.2768|+3.2767] "rad/s" Vector__XXX
 
 BO_ 105 M165_Motor_Position_Info_i1: 8 INV1
  SG_ D4_Delta_Resolver_Filtered : 48|16@1- (0.1,0) [-3276.8|3276.7] "deg" Vector__XXX
