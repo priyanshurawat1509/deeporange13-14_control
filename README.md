@@ -23,6 +23,7 @@
 ### Contributors:
  - Prakhar Gupta (prakhag@clemson.edu)
  - Shubhankar Kulkarni (sskulka@clemson.edu)
+ - Priyanshu Rawat (prawat@clemson.edu)
  - Shubham Gupta
  - Program Manager/Maintainer: Chris Paredis (paredis@clemson.edu)
 
