@@ -13,8 +13,8 @@ RosHealthMonitor::RosHealthMonitor(ros::NodeHandle& node, ros::NodeHandle &priv_
     // tf_sub = n.subscribe("/rosout",100,&rosHealth::tfCallback,this);
     node.getParam("rtk_check_timer", this->rtk_check);
     node.getParam("do_ns", this->do_ns);
-    lidar_sub = node.subscribe(this->do_ns + "/lidar_points", 100, &RosHealthMonitor::lidarCallback, this);
-    rtk_sub = node.subscribe(this->do_ns + "/novatel/oem7/inspvax", 1, &RosHealthMonitor::inspvaxCallback, this);
+    lidar_sub = node.subscribe(this->do_ns + "lidar_points", 100, &RosHealthMonitor::lidarCallback, this);
+    rtk_sub = node.subscribe(this->do_ns + "novatel/oem7/inspvax", 1, &RosHealthMonitor::inspvaxCallback, this);
     sub_cmdVel_ = node.subscribe(this->do_ns + "cmd_vel", 10, &RosHealthMonitor::cmdVelCallback, this);
 
     health_pub = node.advertise<deeporange13_msgs::RosHealth>("/deeporange_dbw_ros/ros_health",100);
