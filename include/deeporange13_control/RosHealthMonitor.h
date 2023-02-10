@@ -32,6 +32,8 @@ class RosHealthMonitor
     double startTimer = 0;
     float lidar_tSec = 0;
     float tf_tSec = 0;
+    int rtk_check = 0;
+    std::string do_ns;
 
     //member functions
     void lidarCallback(const sensor_msgs::PointCloud2::ConstPtr& msg);
