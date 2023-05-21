@@ -18,7 +18,6 @@
 - `deeporange13_msgs` : Package for custom messages for DO13 DBW operation
 - `socketcan_bridge` : Package for interfacing CAN to ROS on Linux - https://github.com/ros-industrial/ros_canopen
 - `can_msgs` : Package to support CAN msg format on ROS topics. - https://github.com/ros-industrial/ros_canopen
-- 
 
 ### Contributors:
  - Prakhar Gupta (prakhag@clemson.edu)
